@@ -1,0 +1,55 @@
+import vk 
+import time 
+from time import gmtime, strftime 
+
+session = vk.Session( 
+access_token=) 
+
+api = vk.API(session) 
+
+o = open('output.txt','w')
+
+o.write("My Data")
+
+measure_time = 1440 
+
+
+FriendsNames = {}
+
+FriendsNames["154398930"] = "Аня"
+Wanters = ["154398930"]
+
+online = [0] * measure_time 
+
+
+minute = 10
+
+while(True): 
+    Friends = {} 
+    for i in range(measure_time): 
+        onlineFriends = api.friends.getOnline() 
+        print(time.strftime("%H %M", gmtime())) 
+        for j in range(len(onlineFriends)): 
+            try: 
+                Friends[str(onlineFriends[j])] += 2 
+            except: 
+                Friends[str(onlineFriends[j])] = 2 
+
+        time.sleep(minute) 
+
+        refresh = strftime("%H %M", gmtime()).split(" ")
+
+        if refresh[1] == '00' or refresh[1] == '01': 
+            for j in range(len(Wanters)):
+                o.write(str(FriendsNames[Wanters[j]]))
+                o.write("\n")
+                try:
+                    o.write(Friends[Wanters[j]])
+                except:
+                    o.write("None")  
+
+        if refresh[0] == '00': 
+            Friends = {}
+
+
+f.close()

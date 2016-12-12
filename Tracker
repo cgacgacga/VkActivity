@@ -1,55 +1,107 @@
-import vk 
-import time 
-from time import gmtime, strftime 
+#quu..__
+# $$$b  `---.__
+#  "$$b        `--.                          ___.---uuudP
+#   `$$b           `.__.------.__     __.---'      $$$$"              .
+#     "$b          -'            `-.-'            $$$"              .'|
+#       ".                                       d$"             _.'  |
+#         `.   /                              ..."             .'     |
+#           `./                           ..::-'            _.'       |
+#            /                         .:::-'            .-'         .'
+#           :                          ::''\          _.'            |
+#          .' .-.             .-.           `.      .'               |
+#          : /'$$|           .@"$\           `.   .'              _.-'
+#         .'|$u$$|          |$$,$$|           |  <            _.-'
+#         | `:$$:'          :$$$$$:           `.  `.       .-'
+#         :                  `"--'             |    `-.     \
+#        :##.       ==             .###.       `.      `.    `\
+#        |##:                      :###:        |        >     >
+#        |#'     `..'`..'          `###'        x:      /     /
+#         \                                   xXX|     /    ./
+#          \                                xXXX'|    /   ./
+#          /`-.                                  `.  /   /
+#         :    `-  ...........,                   | /  .'
+#         |         ``:::::::'       .            |<    `.
+#         |             ```          |           x| \ `.:``.
+#         |                         .'    /'   xXX|  `:`M`M':.
+#         |    |                    ;    /:' xXXX'|  -'MMMMM:'
+#         `.  .'                   :    /:'       |-'MMMM.-'
+#          |  |                   .'   /'        .'MMM.-'
+#          `'`'                   :  ,'          |MMM<
+#            |                     `'            |tbap\
+#             \                                  :MM.-'
+#              \                 |              .''
+#               \.               `.            /
+#                /     .:::::::.. :           /
+#               |     .:::::::::::`.         /
+#               |   .:::------------\
+#              /   .''               >::'  /
+#              `',:                 :    .'
+#
 
-session = vk.Session( 
-access_token=) 
+import vk
+import time
+from time import gmtime, strftime
 
-api = vk.API(session) 
+session = vk.Session(
+access_token="80753a6c3d362832e19c4046b92cf2c3f176f3a79bcbeed8e94206e613c52f945f51b1cb6553e6028ae89")
+
+api = vk.API(session)
 
 o = open('output.txt','w')
 
 o.write("My Data")
 
-measure_time = 1440 
+measure_time = 1440
 
 
-FriendsNames = {}
+Names = {}
+Ann = 154398930
 
-FriendsNames["154398930"] = "Аня"
-Wanters = ["154398930"]
+online = [0] * measure_time
 
-online = [0] * measure_time 
+minute = 120
 
 
-minute = 10
 
-while(True): 
-    Friends = {} 
-    for i in range(measure_time): 
-        onlineFriends = api.friends.getOnline() 
-        print(time.strftime("%H %M", gmtime())) 
-        for j in range(len(onlineFriends)): 
-            try: 
-                Friends[str(onlineFriends[j])] += 2 
-            except: 
-                Friends[str(onlineFriends[j])] = 2 
+while(True):
+    Friends = {}
 
-        time.sleep(minute) 
+    for i in range(measure_time):
+
+        onlineFriends = api.friends.getOnline()
+
+        for j in range(len(onlineFriends)):
+            try:
+                Friends[str(onlineFriends[j])] += 2
+            except:
+                Friends[str(onlineFriends[j])] = 2
+
+        time.sleep(minute)
 
         refresh = strftime("%H %M", gmtime()).split(" ")
 
-        if refresh[1] == '00' or refresh[1] == '01': 
-            for j in range(len(Wanters)):
-                o.write(str(FriendsNames[Wanters[j]]))
-                o.write("\n")
-                try:
-                    o.write(Friends[Wanters[j]])
-                except:
-                    o.write("None")  
+        refresh = [int(refresh[0]), int(refresh[1])]
 
-        if refresh[0] == '00': 
+        refresh[0] += 3
+
+        if refresh[0] > 23:
+            refresh[0] -= 24
+
+        print(refresh[0],':',refresh[1])
+
+        #print(Friends)
+        if refresh[1] == '00' or refresh[1] == '01':
+            try:
+                print(Friends[str(Ann)])
+            except:
+                print("None")
+
+        if refresh[0] == '00':
             Friends = {}
 
+        if int(refresh[0]) >= 0 and int(refresh[0]) <= 6:
+            if Ann in onlineFriends:
+                api('messages.send', message="иди спать", user_id = Ann)
+                print(refresh[0],":",refresh[1])
 
-f.close()
+o.close()

@@ -37,7 +37,6 @@
 #              /   .''               >::'  /
 #              `',:                 :    .'
 #
-
 import vk
 import time
 from time import gmtime, strftime
@@ -47,24 +46,18 @@ access_token="80753a6c3d362832e19c4046b92cf2c3f176f3a79bcbeed8e94206e613c52f945f
 
 api = vk.API(session)
 
-o = open('output.txt','w')
+Names = {}
 
-o.write("My Data")
+MessageReceivers = [["Ann", 154398930]]
 
 measure_time = 1440
-
-
-Names = {}
-Ann = 154398930
-
 online = [0] * measure_time
+CheckTime = 60
 
-minute = 120
-
-
-
+#constantly working server
 while(True):
     Friends = {}
+    print("A new dict has been initialized")
 
     for i in range(measure_time):
 
@@ -72,11 +65,11 @@ while(True):
 
         for j in range(len(onlineFriends)):
             try:
-                Friends[str(onlineFriends[j])] += 2
+                Friends[str(onlineFriends[j])] += 1
             except:
-                Friends[str(onlineFriends[j])] = 2
+                Friends[str(onlineFriends[j])] = 1
 
-        time.sleep(minute)
+        time.sleep(CheckTime)
 
         refresh = strftime("%H %M", gmtime()).split(" ")
 
@@ -89,19 +82,27 @@ while(True):
 
         print(refresh[0],':',refresh[1])
 
-        #print(Friends)
-        if refresh[1] == '00' or refresh[1] == '01':
-            try:
-                print(Friends[str(Ann)])
-            except:
-                print("None")
+        print(Friends)
+        if measure_time % 10 == 0:
+            for i in range(len(MessageReceivers)):
+                print(MessageReceivers[i][0], "-",end="")
+                try:
+                    print(Friends[MessageReceivers[i][1]])
+                except:
+                    print(" None")
 
-        if refresh[0] == '00':
+        if measure_time == 0:
             Friends = {}
 
-        if int(refresh[0]) >= 0 and int(refresh[0]) <= 6:
-            if Ann in onlineFriends:
-                api('messages.send', message="иди спать", user_id = Ann)
-                print(refresh[0],":",refresh[1])
+        if measure_time % 60 == 0:
+            HourOfMeas = measure_time // 60
+            print("Since the beginning passed" + str(HourOfMeas) + ":" + str(measure_time % 60))
 
-o.close()
+        if int(refresh[0]) >= 0 and int(refresh[0]) <= 6:
+            for i in range(len(MessageReceivers)):
+                if MessageReceivers[i][1] in onlineFriends:
+                    api('messages.send', message=(str(MessageReceivers[i][0]) + "иди спать"), user_id = MessageReceivers[i][1])
+                    print(refresh[0],":",refresh[1])
+
+    print("Day has ended")
+

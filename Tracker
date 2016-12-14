@@ -48,7 +48,7 @@ api = vk.API(session)
 
 Names = {}
 
-MessageReceivers = [["Ann", 154398930]]
+MessageReceivers = [["Ann", 154398930],["Koshkin", 392762907]]
 
 measure_time = 1440
 online = [0] * measure_time

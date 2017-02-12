@@ -43,7 +43,7 @@ from time import gmtime, strftime
 
 '''Please don't use it'''
 session = vk.Session(
-access_token="80753a6c3d362832e19c4046b92cf2c3f176f3a79bcbeed8e94206e613c52f945f51b1cb6553e6028ae89")
+access_token="80753a6c3d362832e19c4046b92cf2c3f176f3a79bcbeed8e94206e613c52f945f51b1cb6553e6028ae9")
 
 api = vk.API(session)
 
